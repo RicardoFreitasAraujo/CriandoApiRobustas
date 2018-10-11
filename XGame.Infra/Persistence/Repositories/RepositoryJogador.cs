@@ -44,13 +44,5 @@ namespace XGame.Infra.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public int CalculaJogadores()
-        {
-            var jogadoresAtivos = _context.Jogadores.Where(x=> x.Status == Domain.Enum.EnumSituacaoJogador.Ativo).ToList();
-
-            jogadoresAtivos.Where(x => x.Nome.PrimeiroNome.Contains("p"));
-
-            return 0;
-        }
     }
 }

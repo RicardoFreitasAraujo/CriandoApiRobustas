@@ -1,10 +1,10 @@
 ﻿using System;
+using XGame.Domain.Entities.Base;
 
 namespace XGame.Domain.Entities
 {
-    public class Jogo
+    public class Jogo: EntityBase
     {
-        public Guid Id { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public string Produtora { get; set; }

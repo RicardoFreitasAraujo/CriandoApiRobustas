@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XGame.Domain.Arguments.Base;
 using XGame.Domain.Arguments.Jogador;
 using XGame.Domain.Entities;
 using XGame.Domain.Interfaces.Repositories;
@@ -39,7 +40,7 @@ namespace XGame.Domain.Services
                 return null;
             }
 
-            jogador = _repositoryJogador.AdicionarJogador(jogador);
+            jogador = _repositoryJogador.Adicionar(jogador);
             return new AdicionarJogadorResponse() { Id = jogador.Id, Message = "Operação realizada com sucesso" };
         }
 
@@ -50,7 +51,8 @@ namespace XGame.Domain.Services
                 this.AddNotification("AlterarJogador", Message.X0_E_OBRIGATORIO.ToFormat("AlterarJogadorRequest"));
             }
 
-            Jogador jogador = _repositoryJogador.ObterJogadorPorId(request.Id);
+            Jogador jogador = _repositoryJogador.ObterporId(request.Id);
+
             if (jogador == null)
             {
                 this.AddNotification("Id", "Dados Não encontrado");
@@ -69,7 +71,7 @@ namespace XGame.Domain.Services
                 return null;
             }
 
-            _repositoryJogador.AlterarJogador(jogador);
+            _repositoryJogador.Editar(jogador);
             return (AlterarJogadorResponse)jogador;
 
         }
@@ -81,8 +83,8 @@ namespace XGame.Domain.Services
                 AddNotification("AutenticarJogadorRequest",  string.Format(Message.X0_E_OBRIGATORIO, "AutenticarJogadorRequest"));
             }
 
-            var email = new Email("paulo@gmail.com");
-            Jogador jogador = new Jogador(email,"222");
+            var email = new Email(request.Email);
+            Jogador jogador = new Jogador(email,request.Senha);
 
             AddNotifications(jogador, email);
             if (jogador.IsInvalid())
@@ -90,18 +92,36 @@ namespace XGame.Domain.Services
                 return null;
             }
 
-            jogador = _repositoryJogador.AutenticarJogador(request);
+            jogador = _repositoryJogador.ObterPor(x => x.Email.Endereco == request.Email && x.Senha == request.Senha).First();
 
+            return (AutenticarJogadorResponse)jogador;
+
+            /*
             AutenticarJogadorResponse response = new AutenticarJogadorResponse();
             response.Email = jogador.Email.Endereco;
             response.PrimeiroNome = jogador.Nome.PrimeiroNome;
             response.Status = (int)jogador.Status;
-            return response;
+            return response;*/
         }
 
         public IEnumerable<JogadorResponse> ListarJogador()
         {
-            return _repositoryJogador.ListaJogador().ToList().Select(jogador => (JogadorResponse)jogador);
+            return _repositoryJogador.Listar().Select(jogador => (JogadorResponse)jogador).ToList();
+        }
+
+        public ResponseBase ExcluirJogador(Guid id)
+        {
+            Jogador jogador = _repositoryJogador.ObterporId(id);
+
+            if (jogador == null)
+            {
+                this.AddNotification("Id", "Dados Não Encontrados");
+                return null;
+            }
+
+            this._repositoryJogador.Remover(jogador);
+
+            return new ResponseBase();
         }
     }
 }

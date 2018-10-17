@@ -3,10 +3,11 @@ using XGame.Domain.ValueObjects;
 using XGame.Domain.Enum;
 using prmToolkit.NotificationPattern;
 using XGame.Domain.Extensions;
+using XGame.Domain.Entities.Base;
 
 namespace XGame.Domain.Entities
 {
-    public class Jogador: Notifiable
+    public class Jogador: EntityBase
     {
         public Jogador(Email email, string senha)
         {
@@ -23,7 +24,6 @@ namespace XGame.Domain.Entities
             this.Nome = nome;
             this.Email = email;
             this.Senha = senha;
-            this.Id = Guid.NewGuid();
             this.Status = EnumSituacaoJogador.EmAnalise;
 
             new AddNotifications<Jogador>(this).IfNullOrInvalidLength(x => x.Senha, 6, 32);
@@ -43,7 +43,6 @@ namespace XGame.Domain.Entities
             this.AddNotifications(nome, email);
         }
 
-        public Guid Id { get; private set; }
         public Nome Nome { get; private set; }
         public Email Email { get; private set; }
         public string Senha { get; private set; }

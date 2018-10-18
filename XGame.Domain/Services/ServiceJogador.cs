@@ -3,8 +3,6 @@ using prmToolkit.NotificationPattern.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using XGame.Domain.Arguments.Base;
 using XGame.Domain.Arguments.Jogador;
 using XGame.Domain.Entities;
@@ -31,10 +29,12 @@ namespace XGame.Domain.Services
 
         public AdicionarJogadorResponse AdicionarJogador(AdicionarJogadorRequest request)
         {
-            //Nome nome = new Nome(request.,"Freitas");
-            //Email email = new Email("paulo.analista@outlook.com");
-            Jogador jogador = new Jogador(request.Nome,request.Email,"123456");
-            
+            Nome nome = new Nome(request.PrimeiroNome,request.UltimoNome);
+            Email email = new Email(request.Email);
+            Jogador jogador = new Jogador(nome,email,request.Senha);
+
+            this.AddNotifications(nome, email);
+
             if (this.IsInvalid())
             {
                 return null;

@@ -19,6 +19,7 @@ namespace XGame.AppConsole
             //request.Email = "paulo@paulo.com";
             //request.Senha = "123456789";
 
+            /*
             var request = new AdicionarJogadorRequest()
             {
                 Email = new Email("paulo.analista@outlook.com"),
@@ -29,7 +30,7 @@ namespace XGame.AppConsole
 
 
             var response = service.AdicionarJogador(request);
-
+            */
             
             
             

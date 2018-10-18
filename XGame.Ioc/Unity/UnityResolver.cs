@@ -26,7 +26,7 @@ namespace XGame.Ioc.Unity
             {
                 return container.Resolve(serviceType);
             }
-            catch (ResolutionFailedException ex)
+            catch (ResolutionFailedException)
             {
                 return null;
             }

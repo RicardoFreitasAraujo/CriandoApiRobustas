@@ -9,6 +9,10 @@ namespace XGame.Domain.ValueObjects
 {
     public class Nome: Notifiable
     {
+        public Nome()
+        {
+
+        }
         public Nome(string primeiroNome, string ultimoNome)
         {
             this.PrimeiroNome = primeiroNome;

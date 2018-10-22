@@ -35,6 +35,11 @@ namespace XGame.Domain.Services
 
             this.AddNotifications(nome, email);
 
+            if (_repositoryJogador.Existe(x => x.Email.Endereco == request.Email))
+            {
+                this.AddNotification(new Notification("Email","Já existe um e-mail chamado " + request.Email));
+            }
+
             if (this.IsInvalid())
             {
                 return null;
@@ -95,18 +100,17 @@ namespace XGame.Domain.Services
             jogador = _repositoryJogador.ObterPor(x => x.Email.Endereco == request.Email && x.Senha == request.Senha).First();
 
             return (AutenticarJogadorResponse)jogador;
-
-            /*
-            AutenticarJogadorResponse response = new AutenticarJogadorResponse();
-            response.Email = jogador.Email.Endereco;
-            response.PrimeiroNome = jogador.Nome.PrimeiroNome;
-            response.Status = (int)jogador.Status;
-            return response;*/
         }
 
         public IEnumerable<JogadorResponse> ListarJogador()
         {
-            return _repositoryJogador.Listar().Select(jogador => (JogadorResponse)jogador).ToList();
+            return _repositoryJogador.Listar().Select(x =>  new JogadorResponse() {
+                Id = x.Id,
+                NomeCompleto = x.Nome.PrimeiroNome + " " + x.Nome.UltimoNome,
+                PrimeiroNome = x.Nome.PrimeiroNome,
+                UltimoNome = x.Nome.UltimoNome,
+                Email = x.Email.Endereco
+            }).ToList();
         }
 
         public ResponseBase ExcluirJogador(Guid id)

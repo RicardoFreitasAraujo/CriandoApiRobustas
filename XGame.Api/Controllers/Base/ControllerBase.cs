@@ -21,9 +21,9 @@ namespace XGame.Api.Controllers.Base
             this._unitOfWork = unitOfWork;
         }
 
-        public async Task<HttpResponseMessage> ResponseAsync(object result, IServiceBase seriveBase)
+        public async Task<HttpResponseMessage> ResponseAsync(object result, IServiceBase serviceBase)
         {
-            this._serviceBase = seriveBase;
+            this._serviceBase = serviceBase;
 
             if (!_serviceBase.Notifications.Any())
             {
@@ -41,7 +41,7 @@ namespace XGame.Api.Controllers.Base
             }
             else
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new { errors = seriveBase.Notifications });
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { errors = serviceBase.Notifications });
             }
         }
 

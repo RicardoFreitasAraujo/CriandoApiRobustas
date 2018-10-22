@@ -23,7 +23,9 @@ namespace XGame.Infra.Persistence.Repositories.Base
 
         public TEntidade Adicionar(TEntidade entidade)
         {
-            return _context.Set<TEntidade>().Add(entidade);
+            _context.Set<TEntidade>().Add(entidade);
+            _context.SaveChanges();
+            return entidade;
         }
 
         public IEnumerable<TEntidade> AdicionarLista(IEnumerable<TEntidade> entidades)
@@ -34,6 +36,7 @@ namespace XGame.Infra.Persistence.Repositories.Base
         public TEntidade Editar(TEntidade entidade)
         {
             _context.Entry(entidade).State = System.Data.Entity.EntityState.Modified;
+            _context.SaveChanges();
             return entidade;
         }
 
@@ -71,6 +74,7 @@ namespace XGame.Infra.Persistence.Repositories.Base
         public void Remover(TEntidade entidade)
         {
             _context.Set<TEntidade>().Remove(entidade);
+            _context.SaveChanges();
         }
     }
 }
